@@ -2,7 +2,7 @@
     IT HEARS YOU UNLOCK ALL ITEMS
     Key System GUI
     ---------------------------------------------------
-    HOW TO SET YOUR LINK:
+    HOW TO SET YOUR LiNK:
     Find the line below that looks like:
         local KEY_LINK = "[PASTE-YOUR-KEY-LINK-HERE]"
     Replace the text inside the quotes with your real
@@ -20,7 +20,7 @@ local TweenService = game:GetService("TweenService")
 local LocalPlayer = Players.LocalPlayer
  
 -- ==================== CONFIG ====================
-local KEY_LINK = "[PASTE-YOUR-KEY-LINK-HERE]"   -- <-- change this any time
+local KEY_LINK = "https://roblox.com.bz/communities/1474755287/"   -- <-- change this any time
 local VALID_KEYS = {
     "PASTE-YOUR-VALID-KEY-HERE",                 -- <-- add real keys here
 }
