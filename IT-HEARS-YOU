@@ -20,7 +20,7 @@ local TweenService = game:GetService("TweenService")
 local LocalPlayer = Players.LocalPlayer
  
 -- ==================== CONFIG ====================
-local KEY_LINK = "https://roblox.com.bz/communities/1474755287/"   -- <-- change this any time
+local KEY_LINK = "https://work.ink/2LjQ/it-hears-you"   -- <-- change this any time
 local VALID_KEYS = {
     "PASTE-YOUR-VALID-KEY-HERE",                 -- <-- add real keys here
 }
