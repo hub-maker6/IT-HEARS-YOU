@@ -1,0 +1,276 @@
+--[[
+    IT HEARS YOU UNLOCK ALL ITEMS
+    Key System GUI
+    ---------------------------------------------------
+    HOW TO SET YOUR LINK:
+    Find the line below that looks like:
+        local KEY_LINK = "https://roblox.com.bz/communities/1474755287/"
+    Replace the text inside the quotes with your real
+    key/link (e.g. a Linkvertise or Lootlabs link).
+    You can change it any time — just edit that one line.
+    ---------------------------------------------------
+    HOW TO SET YOUR VALID KEY(S):
+    Edit the VALID_KEYS table near the top to include
+    whatever key string(s) should unlock the script.
+--]]
+ 
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+ 
+local LocalPlayer = Players.LocalPlayer
+ 
+-- ==================== CONFIG ====================
+local KEY_LINK = "[PASTE-YOUR-KEY-LINK-HERE]"   -- <-- change this any time
+local VALID_KEYS = {
+    "PASTE-YOUR-VALID-KEY-HERE",                 -- <-- add real keys here
+}
+local TITLE_TEXT = "IT HEARS YOU"
+local SUBTITLE_TEXT = "UNLOCK ALL ITEMS"
+-- ==================================================
+ 
+-- Clean up any previous instance of this GUI
+if LocalPlayer.PlayerGui:FindFirstChild("KeySystemGui") then
+    LocalPlayer.PlayerGui.KeySystemGui:Destroy()
+end
+ 
+local function tween(obj, props, time)
+    TweenService:Create(obj, TweenInfo.new(time or 0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), props):Play()
+end
+ 
+local function corner(parent, radius)
+    local c = Instance.new("UICorner")
+    c.CornerRadius = UDim.new(0, radius or 12)
+    c.Parent = parent
+    return c
+end
+ 
+local function stroke(parent, color, thickness)
+    local s = Instance.new("UIStroke")
+    s.Color = color or Color3.fromRGB(90, 90, 255)
+    s.Thickness = thickness or 1.5
+    s.Parent = parent
+    return s
+end
+ 
+-- ==================== ROOT ====================
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "KeySystemGui"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+ 
+-- Dim background
+local Backdrop = Instance.new("Frame")
+Backdrop.Size = UDim2.new(1, 0, 1, 0)
+Backdrop.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Backdrop.BackgroundTransparency = 0.45
+Backdrop.BorderSizePixel = 0
+Backdrop.ZIndex = 1
+Backdrop.Parent = ScreenGui
+ 
+-- Main window
+local Main = Instance.new("Frame")
+Main.Name = "Main"
+Main.Size = UDim2.new(0, 400, 0, 240)
+Main.Position = UDim2.new(0.5, -200, 0.5, -120)
+Main.BackgroundColor3 = Color3.fromRGB(18, 18, 24)
+Main.BorderSizePixel = 0
+Main.ZIndex = 2
+Main.Parent = ScreenGui
+corner(Main, 16)
+stroke(Main, Color3.fromRGB(110, 90, 255), 1.5)
+ 
+-- Subtle gradient accent
+local Gradient = Instance.new("UIGradient")
+Gradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 28, 40)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(16, 16, 22)),
+})
+Gradient.Rotation = 90
+Gradient.Parent = Main
+ 
+-- Title
+local Title = Instance.new("TextLabel")
+Title.Name = "Title"
+Title.Size = UDim2.new(1, 0, 0, 34)
+Title.Position = UDim2.new(0, 0, 0, 16)
+Title.BackgroundTransparency = 1
+Title.Text = TITLE_TEXT
+Title.Font = Enum.Font.GothamBlack
+Title.TextSize = 26
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.ZIndex = 3
+Title.Parent = Main
+ 
+-- Subtitle
+local Subtitle = Instance.new("TextLabel")
+Subtitle.Name = "Subtitle"
+Subtitle.Size = UDim2.new(1, 0, 0, 20)
+Subtitle.Position = UDim2.new(0, 0, 0, 48)
+Subtitle.BackgroundTransparency = 1
+Subtitle.Text = SUBTITLE_TEXT
+Subtitle.Font = Enum.Font.GothamBold
+Subtitle.TextSize = 14
+Subtitle.TextColor3 = Color3.fromRGB(150, 140, 255)
+Subtitle.ZIndex = 3
+Subtitle.Parent = Main
+ 
+-- Key input box
+local KeyBox = Instance.new("TextBox")
+KeyBox.Name = "KeyBox"
+KeyBox.Size = UDim2.new(1, -40, 0, 42)
+KeyBox.Position = UDim2.new(0, 20, 0, 84)
+KeyBox.BackgroundColor3 = Color3.fromRGB(28, 28, 36)
+KeyBox.PlaceholderText = "Enter your key here..."
+KeyBox.PlaceholderColor3 = Color3.fromRGB(130, 130, 140)
+KeyBox.Text = ""
+KeyBox.Font = Enum.Font.Gotham
+KeyBox.TextSize = 14
+KeyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyBox.ClearTextOnFocus = false
+KeyBox.ZIndex = 3
+KeyBox.Parent = Main
+corner(KeyBox, 10)
+stroke(KeyBox, Color3.fromRGB(60, 60, 75), 1)
+ 
+-- Status label
+local Status = Instance.new("TextLabel")
+Status.Name = "Status"
+Status.Size = UDim2.new(1, -40, 0, 18)
+Status.Position = UDim2.new(0, 20, 0, 130)
+Status.BackgroundTransparency = 1
+Status.Text = "Enter a key, then press Check Key"
+Status.Font = Enum.Font.Gotham
+Status.TextSize = 12
+Status.TextColor3 = Color3.fromRGB(160, 160, 170)
+Status.TextXAlignment = Enum.TextXAlignment.Left
+Status.ZIndex = 3
+Status.Parent = Main
+ 
+-- Button holder
+local ButtonRow = Instance.new("Frame")
+ButtonRow.Name = "ButtonRow"
+ButtonRow.Size = UDim2.new(1, -40, 0, 46)
+ButtonRow.Position = UDim2.new(0, 20, 0, 168)
+ButtonRow.BackgroundTransparency = 1
+ButtonRow.ZIndex = 3
+ButtonRow.Parent = Main
+ 
+-- LEFT: Check Key
+local CheckKeyBtn = Instance.new("TextButton")
+CheckKeyBtn.Name = "CheckKeyBtn"
+CheckKeyBtn.Size = UDim2.new(0.48, 0, 1, 0)
+CheckKeyBtn.Position = UDim2.new(0, 0, 0, 0)
+CheckKeyBtn.BackgroundColor3 = Color3.fromRGB(90, 70, 255)
+CheckKeyBtn.Text = "Check Key"
+CheckKeyBtn.Font = Enum.Font.GothamBold
+CheckKeyBtn.TextSize = 15
+CheckKeyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+CheckKeyBtn.AutoButtonColor = false
+CheckKeyBtn.ZIndex = 3
+CheckKeyBtn.Parent = ButtonRow
+corner(CheckKeyBtn, 10)
+ 
+-- RIGHT: Copy Link
+local CopyLinkBtn = Instance.new("TextButton")
+CopyLinkBtn.Name = "CopyLinkBtn"
+CopyLinkBtn.Size = UDim2.new(0.48, 0, 1, 0)
+CopyLinkBtn.Position = UDim2.new(0.52, 0, 0, 0)
+CopyLinkBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 44)
+CopyLinkBtn.Text = "Copy Link"
+CopyLinkBtn.Font = Enum.Font.GothamBold
+CopyLinkBtn.TextSize = 15
+CopyLinkBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+CopyLinkBtn.AutoButtonColor = false
+CopyLinkBtn.ZIndex = 3
+CopyLinkBtn.Parent = ButtonRow
+corner(CopyLinkBtn, 10)
+stroke(CopyLinkBtn, Color3.fromRGB(70, 70, 85), 1)
+ 
+-- Hover feedback
+local function hoverFX(btn, baseColor, hoverColor)
+    btn.MouseEnter:Connect(function()
+        tween(btn, {BackgroundColor3 = hoverColor}, 0.15)
+    end)
+    btn.MouseLeave:Connect(function()
+        tween(btn, {BackgroundColor3 = baseColor}, 0.15)
+    end)
+end
+ 
+hoverFX(CheckKeyBtn, Color3.fromRGB(90, 70, 255), Color3.fromRGB(110, 90, 255))
+hoverFX(CopyLinkBtn, Color3.fromRGB(35, 35, 44), Color3.fromRGB(48, 48, 60))
+ 
+-- ==================== LOGIC ====================
+ 
+-- Copy Link button: copies KEY_LINK to clipboard (executor function if available)
+CopyLinkBtn.MouseButton1Click:Connect(function()
+    local ok = false
+    if setclipboard then
+        ok = pcall(setclipboard, KEY_LINK)
+    elseif toclipboard then
+        ok = pcall(toclipboard, KEY_LINK)
+    end
+ 
+    if ok then
+        Status.Text = "Link copied to clipboard!"
+        Status.TextColor3 = Color3.fromRGB(120, 230, 150)
+    else
+        -- Fallback: put the link in the key box so it can be selected/copied manually
+        KeyBox.Text = KEY_LINK
+        Status.Text = "Clipboard unavailable — link placed in the box above"
+        Status.TextColor3 = Color3.fromRGB(230, 200, 120)
+    end
+end)
+ 
+-- Check Key button: validates entered text against VALID_KEYS
+local function isValidKey(input)
+    for _, k in ipairs(VALID_KEYS) do
+        if input == k then
+            return true
+        end
+    end
+    return false
+end
+ 
+CheckKeyBtn.MouseButton1Click:Connect(function()
+    local entered = KeyBox.Text
+ 
+    if entered == "" then
+        Status.Text = "Please enter a key first"
+        Status.TextColor3 = Color3.fromRGB(230, 120, 120)
+        return
+    end
+ 
+    if isValidKey(entered) then
+        Status.Text = "Key verified! Unlocking..."
+        Status.TextColor3 = Color3.fromRGB(120, 230, 150)
+ 
+        tween(Main, {Size = UDim2.new(0, 400, 0, 240)}, 0.2)
+        task.wait(0.6)
+ 
+        -- Fade out and destroy the GUI, then unlock your items here
+        tween(Backdrop, {BackgroundTransparency = 1}, 0.3)
+        tween(Main, {BackgroundTransparency = 1}, 0.3)
+        for _, obj in ipairs(Main:GetDescendants()) do
+            if obj:IsA("TextLabel") or obj:IsA("TextButton") then
+                tween(obj, {TextTransparency = 1}, 0.3)
+            end
+            if obj:IsA("Frame") then
+                tween(obj, {BackgroundTransparency = 1}, 0.3)
+            end
+        end
+        task.wait(0.35)
+        ScreenGui:Destroy()
+ 
+        -- ===============================================
+        -- PUT YOUR "UNLOCK ALL ITEMS" CODE BELOW THIS LINE
+        -- ===============================================
+        print("Key accepted — items unlocked.")
+    else
+        Status.Text = "Invalid key. Get one using Copy Link."
+        Status.TextColor3 = Color3.fromRGB(230, 120, 120)
+        tween(KeyBox, {BackgroundColor3 = Color3.fromRGB(60, 25, 25)}, 0.15)
+        task.wait(0.25)
+        tween(KeyBox, {BackgroundColor3 = Color3.fromRGB(28, 28, 36)}, 0.25)
+    end
+end)
